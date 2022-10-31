@@ -1,0 +1,60 @@
+Square font en kleiner lettertype.
+Even vooraf, voordat je het spel start. Voor de optimale ervaring moet je een square font gebruiken. In de assets folder zit een square font (square.ttf) meegeleverd, die je kan downloaden door het te openen en rechts bovenin op install te klikken. Daarna moet je dit in je terminal instellen als font. Dit kan door in je settings.json file van VSCode deze line toe te voegen: "editor.fontFamily": "Square",
+Dit kan je na afloop van het spel weer weghalen om je oude font terug te krijgen.
+
+Als het spel hierna nog steeds niet goed rendered, probeer dan je font size op 6 te zetten, door in dezelfde file deze line toe te voegen: "terminal.integrated.fontSize": 6,
+
+
+
+Beginners Guide:
+Welkom! en alvast bedankt voor het spelen! Mijn game voor deel 2 is een Pokemon Gen1 'inspired' game, Pokemon UVA. Waar je begint in je eigen kamer huis en vanaf daar rond kunt exploreren. Je kunt rondlopen met de pijltjes toetsen en met npc's kan je interacteren met 'enter' om je in de goede richting te wijzen. Rechts onder in de village is het laboratorium van Professor Oak, waar je de keuze krijgt uit 3 starter pokemons, door met 1 te interacteren (enter). 
+
+Na een starter te hebben gekozen kan je verder gaan naar de 'route' bovenin, waar je met wilde pokemons kan battlen en de wereld kan exploreren. Elke pokemon heeft zijn eigen health en attack waardes. Zo doen Pidgeys veel damage, maar hebben ze maar weinig hp. Je hebt de keuze uit 2 attack moves: tackle en leer. Leer zit er eigenlijk in als grap en doet 0 damage, terwijl tackle een sterke attack is.
+
+Als je starter pokemon geen health meer heeft eindigt het spel en krijg je je score te zien van hoeveel pokemons je hebt gedefeat. Het doel is om zo veel mogelijk pokemons te defeaten en de hoogste score te halen!
+
+Veel plezier :)
+
+
+
+Controls:
+Het staat ook in het game menu aangegeven, maar:
+Pijltjes toetsen om rond te bewegen en te navigeren
+Enter knop om te interacteren en iets te selecten.
+
+
+
+Weetjes !
+Wist je dat Pokemon Red & Blue geschreven zijn in Assembly code!
+
+Wist je dat de Kanto Region in Pokemon Red & Blue gebasseerd is op de regio waar Tokyo ligt!
+
+
+
+Informatie over de code:
+De main file is pokemon_uva.c, deze maakt door de header file: header.h, gebruik van de functies om voor het rooster en het renderen uit rooster_en_render.c
+
+Het hele spel is geschreven in c met de ncurses library voor de rendering. Dit is dezelfde library die we bij deel 1 hebben gebruikt om een simpel doolhof te renderen. SDL is niet gebruikt.
+
+
+
+Informatie over de sprites en textures:
+Er zit een totaal van 121 sprites en textures in de game. Deze sprites en textures worden gerendered van hele lang 1 lijns cijfers bestanden. Dit was de meest geoptimaliseerde manier om de sprites op te slaan en te renderen met ncurses.
+
+In /assets/main/game_map.txt staat de grid van de wereld. Elk character in deze grid word gelezen en een corresponderende texture/sprite word er op die plek in het scherm gerendered. Het spel rendered alleen de 11 x 7 grid rondom de speler.
+
+Het grootste gedeelte van de sprites en textures is zelf gemaakt, maar een deel is ook van andere bronnen, zoals:
+- (Pokemon Red & Blue) De buitenkant van het starters huis.
+- (Pokemon Red & Blue) Interieur van het starters huis.
+- (Pokemon Red & Blue) Main battle scherm.
+- (Pokemon Red & Blue) Achter zijde en voorzijde van de pokemons in battle.
+- (Pokemon Ruby & Sapphire) Ending screen.
+
+De rest van de pixel art is allemaal met de hand in 4 kleuren met paint.net gemaakt, om daarna om te zetten naar een tekst file met alleen de getallen 0 tot en met 3.
+
+
+
+Verdere bronnen:
+De routes in de game zijn geinspireerd op een alternatieve versie van route 101 en 102 in Pokemon Ruby & Sapphire.
+Nanosleep(2) Linux Manuel Page, is gebruikt om een korte sleep te implementeren.
+
