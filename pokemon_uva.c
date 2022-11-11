@@ -33,11 +33,14 @@ int pos_y;
 // De spelers huidige pokemons health.
 int player_health = 20;
 
+// Originele health van de spelers pokemon.
+int originele_player_health = 20;
+
 // De huidige score van de speler.
 int score = 0;
 
 // Starter pokemon gekozen door de speler
-int starter_pokemon;
+int starter_pokemon = 1;
 
 // Hoeveel nanoseconde een bepaalde struct is voor nanosleep().
 struct timespec time2 = {
@@ -352,11 +355,9 @@ void animatie_spiral() {
     // Huidige x en y coorodinaat voor het renderen.
     int x = 0;
     int y = 0;
-
     // Huidige maximale waarde om te renderen.
     int x_max = 10;
     int y_max = 6;
-
     // Hudige minimale waarde om te renderen.
     int x_min = 0;
     int y_min = 1;
@@ -450,54 +451,39 @@ void battle_cursor(int cursor_pos) {
 
 
 // Render de battle healthbars van de speler en tegenstander.
-void battle_healthbars(int health_mult, int tegenstander_health) {
-// Render de health bar van de tegenstander.
-    switch (tegenstander_health/health_mult) {
-        case 0: object_var(9, 13, 52, "assets/battle/hp0_1lijn.txt"); break;
-        case 1: object_var(9, 13, 52, "assets/battle/hp1_1lijn.txt"); break;
-        case 2: object_var(9, 13, 52, "assets/battle/hp2_1lijn.txt"); break;
-        case 3: object_var(9, 13, 52, "assets/battle/hp3_1lijn.txt"); break;
-        case 4: object_var(9, 13, 52, "assets/battle/hp4_1lijn.txt"); break;
-    }
-
-    // Render de health bar van de speler.
-    switch (player_health/5) {
-        case 0: object_var(68, 55, 52, "assets/battle/hp0_1lijn.txt"); break;
-        case 1: object_var(68, 55, 52, "assets/battle/hp1_1lijn.txt"); break;
-        case 2: object_var(68, 55, 52, "assets/battle/hp2_1lijn.txt"); break;
-        case 3: object_var(68, 55, 52, "assets/battle/hp3_1lijn.txt"); break;
-        case 4: object_var(68, 55, 52, "assets/battle/hp4_1lijn.txt"); break;
-    }
-}
-
-
-// Voer het commanda uit van de speler bij de huidige cursor positie.
-int attack_uitvoeren(int cursor_pos,
-int tegenstander_health, int health_mult) {
-    if (cursor_pos == 0) {
-        // Voer de spelers attack uit
-        object_var(1, 74, 126, "assets/battle/tackle_player.txt");
-        tegenstander_health -= pokemon_array[starter_pokemon+2].attack;
-        if (tegenstander_health < 0) {
-            tegenstander_health = 0;
+void battle_healthbars(int originele_health, int tegenstander_health) {
+    // Render de dynamische health bar van de tegenstander.
+    for (int i = 0; i < 36; i++) {
+        if (i < ((tegenstander_health * 36) / originele_health)) {
+            if (10 > ((tegenstander_health * 36) / originele_health)) {
+                object_var(24+i, 14, 1, "assets/battle/hp2_1lijn.txt");
+            } else {
+                object_var(24+i, 14, 1, "assets/battle/hp1_1lijn.txt");
+            }
+        } else {
+            object_var(24+i, 14, 1, "assets/battle/hp0_1lijn.txt");
         }
-    } else {
-        // Doe 'leer', dus geen damage.
-        object_var(1, 74, 126, "assets/battle/leer_player.txt");
     }
 
-    // Render de health bar van de speler en tegenstander en wacht 2 seconde.
-    battle_healthbars(health_mult, tegenstander_health);
-    refresh();
-    sleep(2);
 
-    return tegenstander_health;
+    // Render de dynamische health bar van de speler.
+     for (int i = 0; i < 36; i++) {
+        if (i < ((player_health * 36) / originele_player_health)) {
+            if (10 > ((player_health * 36) / originele_player_health)) {
+                object_var(83+i, 56, 1, "assets/battle/hp2_1lijn.txt");
+            } else {
+                object_var(83+i, 56, 1, "assets/battle/hp1_1lijn.txt");
+            }
+        } else {
+            object_var(83+i, 56, 1, "assets/battle/hp0_1lijn.txt");
+        }
+    }
 }
 
 
 // Speel de beurt van de tegenstander in de battle.
 void beurt_tegen(int tegenstander_health,
-int tegenstander_attack,int health_mult) {
+int tegenstander_attack,int originele_health) {
     // Bepaal 'random' wat de volgende zet van de tegenstander is.
     if (rand() % 2 == 1) {
         object_var(1, 74, 126, "assets/battle/tackle_enemy_1lijn.txt");
@@ -510,7 +496,7 @@ int tegenstander_attack,int health_mult) {
     }
 
     // Render de health bar van de speler en tegenstander.
-    battle_healthbars(health_mult, tegenstander_health);
+    battle_healthbars(originele_health, tegenstander_health);
 
     refresh();
     sleep(2);
@@ -551,7 +537,7 @@ void battle(void) {
     tegenstander_health = pokemon_array[c].health;
 
     // Health multiplier voor de rendering van de tegenstanders health bar.
-    int health_mult = pokemon_array[c].health / 5;
+    int originele_health = pokemon_array[c].health;
 
     // Zet de startpositie van de cursor op 0.
     int cursor_pos = 0;
@@ -569,7 +555,7 @@ void battle(void) {
         // Render de enemy pokemon
         object_var(85, 10,pokemon_array[c].breedte, pokemon_array[c].filename);
         // Render de health bar van de speler en tegenstander.
-        battle_healthbars(health_mult, tegenstander_health);
+        battle_healthbars(originele_health, tegenstander_health);
         // Render de cursor op de juiste plek.
         battle_cursor(cursor_pos);
         refresh();
@@ -584,8 +570,23 @@ void battle(void) {
             // huidige cursor positie uit.
             if (input == '\n') {
                 // Voer de gekozen attack uit door de speler.
-                tegenstander_health = attack_uitvoeren(cursor_pos,
-                tegenstander_health, health_mult);
+                if (cursor_pos == 0) {
+                    // Voer de spelers attack uit
+                    object_var(1, 74, 126, "assets/battle/tackle_player.txt");
+                    tegenstander_health -= pokemon_array[starter_pokemon+2].attack;
+                    if (tegenstander_health < 0) {
+                        tegenstander_health = 0;
+                    }
+                } else {
+                    // Doe 'leer', dus geen damage.
+                    object_var(1, 74, 126, "assets/battle/leer_player.txt");
+                }
+
+                // Render de health bar van de speler en tegenstander en wacht 2 seconde.
+                battle_healthbars(originele_health, tegenstander_health);
+
+                refresh();
+                sleep(2);
                 break;
 
             // Bij de key up of down inverseer cursor pos.
@@ -603,7 +604,7 @@ void battle(void) {
             break;
         }
         // Speel de beurt van de tegenstander.
-        beurt_tegen(tegenstander_health, pokemon_array[c].attack, health_mult);
+        beurt_tegen(tegenstander_health, pokemon_array[c].attack, originele_health);
     }
     // Einde van de battle, wanneer de speler of tegenstander defeated is.
     battle_end();
@@ -636,9 +637,8 @@ void interactie(rooster *rp, int richting) {
                 object_var(25, 72, 126,"assets/main/choose_starter_1lijn.txt");
                 refresh(); getch(); break;
             case ':':
-                animatie_spiral(); break;
-                // object_var(25, 72, 126, "assets/main/goto_professor_oak.txt");
-                // refresh(); getch(); break;
+                object_var(25, 72, 126, "assets/main/goto_professor_oak.txt");
+                refresh(); getch(); break;
         }
         // Als je een starter hebt gekozen, dan kan je verder naar de route.
         if (starter_pokemon != 0) {
