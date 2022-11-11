@@ -347,6 +347,62 @@ void animatie_topdown() {
 }
 
 
+// Spiraal animatie, die naar binnen toe draait.
+void animatie_spiral() {
+    // Huidige x en y coorodinaat voor het renderen.
+    int x = 0;
+    int y = 0;
+
+    // Huidige maximale waarde om te renderen.
+    int x_max = 10;
+    int y_max = 6;
+
+    // Hudige minimale waarde om te renderen.
+    int x_min = 0;
+    int y_min = 1;
+
+    for (int i = 0; i < 7; i++) {
+        // Render lege objecten van linksboven naar rechtsboven.
+        for (;x < x_max; x++) {
+            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+
+            nanosleep(&time2, NULL);
+            refresh();
+        }
+        // Render lege objecten van rechtsboven naar rechtsonder.
+        for (;y < y_max; y++) {
+            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+
+            nanosleep(&time2, NULL);
+            refresh();
+        }
+        // Render lege objecten van rechtsonder naar linksonder.
+        for (;x > x_min; x--) {
+            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+
+            nanosleep(&time2, NULL);
+            refresh();
+        }
+        // Render lege objecten van linksonder naar linksboven.
+        for (;y > y_min; y--) {
+            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+
+            nanosleep(&time2, NULL);
+            refresh();
+        }
+
+        // Haal 1 van het huidige maximum af en tel 1 bij het minimum op,
+        // waardoor de spriaal steeds kleiner word.
+        x_max--;
+        y_max--;
+        x_min++;
+        y_min++;
+    }
+    // Refresh het ncurses scherm.
+    refresh();
+}
+
+
 // Gradient animatie, die langzaam de kleuren steeds donkerder maakt.
 // (gebruikt tussen tp's)
 void animatie_gradient(void) {
@@ -376,7 +432,7 @@ void animatie_gradient(void) {
     refresh();
     sleep(1);
 
-    // Reset weer terug naar de eerste kleuren.
+    // Reset weer terug naar de gekozen kleuren.
     kleuren();
 }
 
@@ -580,8 +636,9 @@ void interactie(rooster *rp, int richting) {
                 object_var(25, 72, 126,"assets/main/choose_starter_1lijn.txt");
                 refresh(); getch(); break;
             case ':':
-                object_var(25, 72, 126, "assets/main/goto_professor_oak.txt");
-                refresh(); getch(); break;
+                animatie_spiral(); break;
+                // object_var(25, 72, 126, "assets/main/goto_professor_oak.txt");
+                // refresh(); getch(); break;
         }
         // Als je een starter hebt gekozen, dan kan je verder naar de route.
         if (starter_pokemon != 0) {
@@ -647,7 +704,7 @@ void speel(rooster *rp) {
         int rel_x = 0;
         int rel_y = 0;
 
-        // Wissel elk frame van water texture, wat op een soort animatie lijkt.
+        // Wissel elke movement van water texture, wat op een animatie lijkt.
         if ((pos_x+pos_y) % 2 == 1) {
             sprites['W'] = "assets/sprites/water/water_1lijn.txt";
         } else {
@@ -737,7 +794,7 @@ int main(void) {
     sprite_array();
 
     // Start menu.
-    menu();
+    // menu();
 
     // Zet de toestand op aan het spelen en start het spel.
     rooster_zet_toestand(rp, AAN_HET_SPELEN);

@@ -235,9 +235,13 @@ void rooster_klaar(rooster *rp) {
 
 // Kijk welk object er staat op een bepaalde positie in het rooster.
 char rooster_kijk(const rooster *rp, int x, int y) {
+   // Als de x of y buiten het rooster valt, return dan een L (leeg vakje).
+   if (x < 1 || y < 1 || x >= rp->breedte || y >= rp->hoogte) {
+      return 'L';
+   }
+
    // Anders: return die positie van de coordinaten in de grid als object.
    char c = rp->grid[y][x];
-   // char c = 'h';
    return c;
 }
 
