@@ -10,7 +10,7 @@
  * score te zien. Probeer een zo hoog mogelijke score te halen!
  */
 
-// Nodig voor de nanosleep functie. Bron 'nanosleep(2) Linux manual page'
+// Nodig voor de nanosleep functie, Bron 'nanosleep(2) Linux manual page'
 #define _POSIX_C_SOURCE 199309L
 
 #include <ncurses.h>
@@ -40,7 +40,7 @@ int originele_player_health = 20;
 int score = 0;
 
 // Starter pokemon gekozen door de speler
-int starter_pokemon = 1;
+int starter_pokemon = 0;
 
 // Hoeveel nanoseconde een bepaalde struct is voor nanosleep().
 struct timespec time2 = {
@@ -210,6 +210,7 @@ void initialiseer() {
         printw("Your terminal doesn't support color. Please restart.\n");
         refresh();
         sleep(2);
+        exit(1);
     }
 
     // Laad de kleuren en palette in.
