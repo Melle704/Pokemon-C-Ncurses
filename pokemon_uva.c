@@ -1,9 +1,4 @@
-/*
- * Naam : Kas Visser
- * UvAnetID : 14625954
- * Studie : BSc Informatica
- *
- * pokemon_uva.c:
+/* pokemon_uva.c:
  * Een pokemon gen1 'inspired' game, waarin je eerst een starter pokemon kiest
  * bij professor Oak, waarna je toegang krijgt tot een 'route', waar je doel is
  * zoveel mogelijk pokemons te defeaten. Na zelf te zijn gedefeat krijg je je
@@ -21,10 +16,11 @@
 #include <stddef.h>
 #include <time.h>
 
-#include "header.h"
+#include "rooster.h"
+#include "colors.h"
+#include "menu.h"
+#include "animations.h"
 
-// Geselecteerde kleur van het spel.
-int spelkleur = 1;
 
 // Huidige player positie in het level.
 int pos_x;
@@ -43,16 +39,10 @@ int score = 0;
 int starter_pokemon = 0;
 
 // Hoeveel nanoseconde een bepaalde struct is voor nanosleep().
-struct timespec time2 = {
+struct timespec time22 = {
     .tv_sec = 0,
     .tv_nsec = 9999999,
 };
-
-struct timespec time3 = {
-    .tv_sec = 0,
-    .tv_nsec = 99999999,
-};
-
 
 // Alle pokemons data opgeslagen in een struct.
 struct pokemon {
@@ -157,45 +147,6 @@ void sprite_array(void) {
 }
 
 
-// Laad de gekozen spelkleuren en kleuren paren in.
-void kleuren(void) {
-    // Alle 'standaard kleuren paren. magenta is standaard licht grijs
-    // en geel is donker grijs.
-    start_color();
-    init_pair(1, COLOR_BLACK, COLOR_BLACK);
-    init_pair(2, COLOR_MAGENTA, COLOR_MAGENTA);
-    init_pair(3, COLOR_YELLOW, COLOR_YELLOW);
-    init_pair(4, COLOR_WHITE, COLOR_WHITE);
-    init_pair(5, COLOR_BLUE, COLOR_BLUE);
-    init_pair(6, COLOR_RED, COLOR_RED);
-
-    init_color(COLOR_BLUE, 0, 0, 900);
-    init_color(COLOR_RED, 850, 0, 0);
-    init_color(COLOR_WHITE, 999, 999, 999);
-
-    // Laad de spelkleur weer terug lopen van 4 naar 1.
-    if (spelkleur == 4) {
-        spelkleur = 1;
-    }
-
-    // Alle verschillende kleuren paletten om uit te kiezen.
-    switch (spelkleur) {
-        case 1:
-            init_color(COLOR_MAGENTA, 300, 300, 300);
-            init_color(COLOR_YELLOW, 700, 700, 700);
-            break;
-        case 2:
-            init_color(COLOR_MAGENTA, 920, 480, 600);
-            init_color(COLOR_YELLOW, 460, 820, 860);
-            break;
-        case 3:
-            init_color(COLOR_MAGENTA, 620, 820, 310);
-            init_color(COLOR_YELLOW, 640, 820, 999);
-            break;
-    }
-}
-
-
 // Initialiseer ncurses en de kleuren van het spel.
 void initialiseer() {
     // Initialiseer ncurses
@@ -215,80 +166,6 @@ void initialiseer() {
 
     // Laad de kleuren en palette in.
     kleuren();
-}
-
-
-// Voer de toets uit in de menu functie.
-int menu_toets(int toets, int positie) {
-    // Bij pijltje naar benden tel je 1 bij positie op en vice versa.
-    switch (toets) {
-        case KEY_DOWN:  positie++; break;
-        case KEY_UP:    positie--; break;
-    }
-
-    // Als de positie minder is dan 1 of meer dan 4, dan moet de positie
-    // aan de andere kant weer terug loopen.
-    if (positie < 1) {
-        positie = 4;
-    } else if (positie > 4) {
-        positie = 1;
-    }
-    return positie;
-}
-
-
-// Render een menu op het scherm met verschillende opties.
-void menu(void) {
-    // Beginpositie en begin render positie van de cursor
-    int positie = 1;
-    int cursor_x = 46;
-    int cursor_y = 49;
-
-    // Laad de titlescreen zien en wacht op een input.
-    render128("assets/main/titlescreen_1lijn.txt");
-    refresh();
-    getch();
-
-    // Display een zwart scherm voor 1 seconde voordat het menu word geladen.
-    clear();
-    refresh();
-    sleep(1);
-
-    while(1) {
-        // Render het main startmenu.
-        render128("assets/main/startmenu_1lijn.txt");
-        // Render de cursor op het startmenu.
-        object_var(cursor_x, cursor_y, 5,"assets/main/cursor_grijs_1lijn.txt");
-        refresh();
-
-        int toets = getch();
-
-        // Als de input een enter is, kijk wat de huidige cursor positie is en
-        // voer het daarbij horende commando uit.
-        if (toets == '\n') {
-            switch (positie) {
-                case 1:     return;                           // Start het spel
-                case 2:     spelkleur++; kleuren(); break;    // kleuren
-                case 3:     render128("assets/main/controls_1lijn.txt");
-                            getch();
-                            break;                            // Controls.
-                case 4:     endwin(); delwin(stdscr); exit(0);// Exit het spel
-            }
-        }
-
-        // Bepaal de nieuwe cursor posite aan de hand van de spelers input.
-        if (toets == KEY_UP || toets == KEY_DOWN) {
-            positie = menu_toets(toets, positie);
-        }
-
-        // Verander de cursor positie aan de hand van de nieuwe positie.
-        switch (positie) {
-            case 1: cursor_x = 46; cursor_y = 49; break;
-            case 2: cursor_x = 46; cursor_y = 59; break;
-            case 3: cursor_x = 46; cursor_y = 69; break;
-            case 4: cursor_x = 46; cursor_y = 79; break;
-        }
-    }
 }
 
 
@@ -328,115 +205,10 @@ void toon_rooster(rooster *rp, int richting) {
         render_y += 16;
     }
     // Wacht even en zorg dat het scherm ook echt getoond wordt
-    nanosleep(&time2, NULL);
+    nanosleep(&time22, NULL);
     refresh();
 }
 
-
-// Top down animatie, die van lingsboven tot rechts onder alle sprites
-// vervangt met zwarte vlakken.
-void animatie_topdown() {
-    // Render op alle plekken een zwart vlak, stuk voor stuk.
-    for (int y = 0; y < 7; y++) {
-        for (int x = 0; x < 11; x++) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
-
-            // Kleine delay voor het effect.
-            nanosleep(&time2, NULL);
-            refresh();
-        }
-    }
-    // Refresh het ncurses scherm.
-    refresh();
-}
-
-
-// Spiraal animatie, die naar binnen toe draait.
-void animatie_spiral() {
-    // Huidige x en y coorodinaat voor het renderen.
-    int x = 0;
-    int y = 0;
-    // Huidige maximale waarde om te renderen.
-    int x_max = 10;
-    int y_max = 6;
-    // Hudige minimale waarde om te renderen.
-    int x_min = 0;
-    int y_min = 1;
-
-    for (int i = 0; i < 7; i++) {
-        // Render lege objecten van linksboven naar rechtsboven.
-        for (;x < x_max; x++) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
-
-            nanosleep(&time2, NULL);
-            refresh();
-        }
-        // Render lege objecten van rechtsboven naar rechtsonder.
-        for (;y < y_max; y++) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
-
-            nanosleep(&time2, NULL);
-            refresh();
-        }
-        // Render lege objecten van rechtsonder naar linksonder.
-        for (;x > x_min; x--) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
-
-            nanosleep(&time2, NULL);
-            refresh();
-        }
-        // Render lege objecten van linksonder naar linksboven.
-        for (;y > y_min; y--) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
-
-            nanosleep(&time2, NULL);
-            refresh();
-        }
-
-        // Haal 1 van het huidige maximum af en tel 1 bij het minimum op,
-        // waardoor de spriaal steeds kleiner word.
-        x_max--;
-        y_max--;
-        x_min++;
-        y_min++;
-    }
-    // Refresh het ncurses scherm.
-    refresh();
-}
-
-
-// Gradient animatie, die langzaam de kleuren steeds donkerder maakt.
-// (gebruikt tussen tp's)
-void animatie_gradient(void) {
-    nanosleep(&time3, NULL);
-
-    // Print het hudige frame in een steeds donkere toon af.
-    // Met een korte delay tussen elke verandering voor het effect.
-    init_color(COLOR_MAGENTA, 0, 0, 0);
-    init_color(COLOR_YELLOW, 300, 300, 300);
-    init_color(COLOR_WHITE, 700, 700, 700);
-    init_color(COLOR_BLUE, 0, 0, 400);
-    init_color(COLOR_RED, 400, 0, 0);
-
-    refresh();
-    nanosleep(&time3, NULL);
-
-    init_color(COLOR_YELLOW, 0, 0, 0);
-    init_color(COLOR_WHITE, 300, 300, 300);
-    init_color(COLOR_BLUE, 0, 0, 0);
-    init_color(COLOR_RED, 0, 0, 0);
-
-    refresh();
-    nanosleep(&time3, NULL);
-
-    init_color(COLOR_WHITE, 0, 0, 0);
-
-    refresh();
-    sleep(1);
-
-    // Reset weer terug naar de gekozen kleuren.
-    kleuren();
-}
 
 // Render de cursor in de battle op de juiste plek.
 void battle_cursor(int cursor_pos) {
@@ -795,7 +567,7 @@ int main(void) {
     sprite_array();
 
     // Start menu.
-    // menu();
+    menu();
 
     // Zet de toestand op aan het spelen en start het spel.
     rooster_zet_toestand(rp, AAN_HET_SPELEN);

@@ -1,9 +1,4 @@
-/*
- * Naam : Kas Visser
- * UvAnetID : 14625954
- * Studie : BSc Informatica
- *
- * rooster_en_render.c:
+/* rooster_en_render.c:
  * Dit bestand bestaat uit de hulp functies voor het rooster waar het spel op
  * is gebasseerd. Ondere andere het lezen van het rooster en alle informatie
  * om het rooster heen staan hier uitgewerkt.
@@ -18,7 +13,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <ncurses.h>
-#include "header.h"
+
+#include "rooster.h"
 
 // Max grootte van een 'grid' bestand.
 #define MAX_LINE 1000
