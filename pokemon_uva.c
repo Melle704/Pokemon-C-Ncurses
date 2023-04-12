@@ -407,7 +407,14 @@ void speel(rooster *rp) {
         // Als de speler op hoog gras staat en een random nummer delbaar is
         // door 6, dan komt de speler een pokemon tegen.
         if (rooster_kijk(rp, pos_x, pos_y) == 'S' && rand() % 6 == 0) {
-            animatie_topdown();
+
+            // Random kans op 1 van de 2 animaties.
+            if (rand() % 2 == 0) {
+                animatie_topdown();
+            } else {
+                animatie_spiral();
+            }
+
             battle();
             // Als de speler geen health meer heeft is het spel over.
             if (player_health < 1) {
