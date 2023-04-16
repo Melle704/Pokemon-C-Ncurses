@@ -6,22 +6,13 @@ HEADERS = $(wildcard *.h)
 
 .PHONY: tarball1 tarball2 clean
 
-all: spel
+all: game
 
-spel: $(SRC)
+game: $(SRC)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 voorbeeld:
 	$(CC) -o voorbeeld voorbeeld.c $(CFLAGS) $(LDFLAGS)
 
-tarball1: deel1.tar.gz
-tarball2: deel2.tar.gz
-
-deel1.tar.gz: spel.c rooster.h rooster.c Makefile
-	tar czf $@ $^
-
-deel2.tar.gz: $(SRC) $(HEADERS) Makefile
-	tar czf $@ $^ assets
-
 clean:
-	rm -f *~ *.o voorbeeld spel deel?.tar.gz
+	rm -f *~ *.o voorbeeld game deel?.tar.gz
