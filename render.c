@@ -47,7 +47,12 @@ void object16(int render_x, int render_y, char *filename) {
          }
 
          // Print het character in de juiste kleur.
-         render_kleur((fgetc(ob)) + 1);
+         int pixel = fgetc(ob);
+         if (pixel == '\n') {
+             x--;
+             continue;
+         }
+         render_kleur(pixel + 1);
       }
    }
    fclose(ob);
