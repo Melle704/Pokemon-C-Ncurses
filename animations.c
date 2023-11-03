@@ -25,7 +25,7 @@ void animatie_topdown() {
     // Render op alle plekken een zwart vlak, stuk voor stuk.
     for (int y = 0; y < 7; y++) {
         for (int x = 0; x < 11; x++) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+            object16(x*16, y*16, "assets/sprites/niks.txt");
 
             // Kleine delay voor het effect.
             nanosleep(&time2, NULL);
@@ -52,28 +52,28 @@ void animatie_spiral() {
     for (int i = 0; i < 7; i++) {
         // Render lege objecten van linksboven naar rechtsboven.
         for (;x < x_max; x++) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+            object16(x*16, y*16, "assets/sprites/niks.txt");
 
             nanosleep(&time2, NULL);
             refresh();
         }
         // Render lege objecten van rechtsboven naar rechtsonder.
         for (;y < y_max; y++) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+            object16(x*16, y*16, "assets/sprites/niks.txt");
 
             nanosleep(&time2, NULL);
             refresh();
         }
         // Render lege objecten van rechtsonder naar linksonder.
         for (;x > x_min; x--) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+            object16(x*16, y*16, "assets/sprites/niks.txt");
 
             nanosleep(&time2, NULL);
             refresh();
         }
         // Render lege objecten van linksonder naar linksboven.
         for (;y > y_min; y--) {
-            object16(x*16, y*16, "assets/sprites/niks_1lijn.txt");
+            object16(x*16, y*16, "assets/sprites/niks.txt");
 
             nanosleep(&time2, NULL);
             refresh();

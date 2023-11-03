@@ -37,7 +37,7 @@ void menu(void) {
     int cursor_y = 49;
 
     // Laad de titlescreen zien en wacht op een input.
-    render128("assets/main/titlescreen_1lijn.txt");
+    render128("assets/main/titlescreen.txt");
     refresh();
     getch();
 
@@ -48,9 +48,9 @@ void menu(void) {
 
     while(1) {
         // Render het main startmenu.
-        render128("assets/main/startmenu_1lijn.txt");
+        render128("assets/main/startmenu.txt");
         // Render de cursor op het startmenu.
-        object_var(cursor_x, cursor_y, 5,"assets/main/cursor_grijs_1lijn.txt");
+        object_var(cursor_x, cursor_y, 5,"assets/main/cursor_grijs.txt");
         refresh();
 
         int toets = getch();

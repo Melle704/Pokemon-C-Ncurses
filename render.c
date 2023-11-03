@@ -21,8 +21,13 @@ void speler(char *richting) {
             break;
          }
 
-         // Print het character in de juiste kleur.
-         render_kleur((fgetc(sp)) + 1);
+         // Print alleen de character als het een juiste code is.
+         int pixel = fgetc(sp);
+         if (pixel > 13) {
+             render_kleur(pixel + 1);
+         } else {
+            x--;
+         }
       }
    }
    fclose(sp);
@@ -46,13 +51,13 @@ void object16(int render_x, int render_y, char *filename) {
             break;
          }
 
-         // Print het character in de juiste kleur.
+         // Print alleen de character als het een juiste code is.
          int pixel = fgetc(ob);
-         if (pixel == '\n') {
-             x--;
-             continue;
+         if (pixel > 13) {
+             render_kleur(pixel + 1);
+         } else {
+            x--;
          }
-         render_kleur(pixel + 1);
       }
    }
    fclose(ob);
@@ -76,8 +81,13 @@ void object_var(int render_x, int render_y, int breedte, char *filename) {
             break;
          }
 
-         // Print het character in de juiste kleur.
-         render_kleur((fgetc(var)) + 1);
+         // Print alleen de character als het een juiste code is.
+         int pixel = fgetc(var);
+         if (pixel > 13) {
+             render_kleur(pixel + 1);
+         } else {
+            x--;
+         }
       }
    }
    fclose(var);
@@ -100,8 +110,13 @@ void render128(char *filename) {
             break;
          }
 
-         // Print het character in de juiste kleur.
-         render_kleur((fgetc(re)) + 1);
+         // Print alleen de character als het een juiste code is.
+         int pixel = fgetc(re);
+         if (pixel > 13) {
+             render_kleur(pixel + 1);
+         } else {
+            x--;
+         }
       }
    }
    fclose(re);

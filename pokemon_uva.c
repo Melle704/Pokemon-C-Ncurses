@@ -56,12 +56,12 @@ struct pokemon {
 
 // Struct array van alle pokemons in de game.
 struct pokemon pokemon_array[6] = {
-    {10, 10, 33, "assets/pokemons/pidgey33_1lijn.txt"},
-    {20, 5, 25,  "assets/pokemons/weedle25_1lijn.txt"},
-    {20, 5, 38, "assets/pokemons/diglet38_1lijn.txt"},
-    {20, 5, 28, "assets/pokemons/charmander_achter_1lijn.txt"},
-    {20, 5, 28, "assets/pokemons/bulbasaur_achter_1lijn.txt"},
-    {20, 5, 28, "assets/pokemons/squirtle_achter_1lijn.txt"},
+    {10, 10, 33, "assets/pokemons/pidgey33.txt"},
+    {20, 5, 25,  "assets/pokemons/weedle25.txt"},
+    {20, 5, 38, "assets/pokemons/diglet38.txt"},
+    {20, 5, 28, "assets/pokemons/charmander_achter.txt"},
+    {20, 5, 28, "assets/pokemons/bulbasaur_achter.txt"},
+    {20, 5, 28, "assets/pokemons/squirtle_achter.txt"},
 };
 
 // Initialiseer ncurses en de kleuren van het spel.
@@ -131,11 +131,11 @@ void toon_rooster(rooster *rp, int richting) {
 void battle_cursor(int cursor_pos) {
     // Render de cursor op de juiste plek aan de hand van de cursor positie.
     if (cursor_pos == 0) {
-        object_var(14, 83, 5, "assets/main/cursor_wit_1lijn.txt");
-        object_var(14, 94, 5, "assets/sprites/wit_1lijn.txt");
+        object_var(14, 83, 5, "assets/main/cursor_wit.txt");
+        object_var(14, 94, 5, "assets/sprites/remove_cursor.txt");
     } else {
-        object_var(14, 94, 5, "assets/main/cursor_wit_1lijn.txt");
-        object_var(14, 80, 5, "assets/sprites/wit_1lijn.txt");
+        object_var(14, 94, 5, "assets/main/cursor_wit.txt");
+        object_var(14, 80, 5, "assets/sprites/remove_cursor.txt");
     }
 }
 
@@ -146,12 +146,12 @@ void battle_healthbars(int originele_health, int tegenstander_health) {
     for (int i = 0; i < 36; i++) {
         if (i < ((tegenstander_health * 36) / originele_health)) {
             if (10 > ((tegenstander_health * 36) / originele_health)) {
-                object_var(24+i, 14, 1, "assets/battle/hp2_1lijn.txt");
+                object_var(24+i, 14, 1, "assets/battle/hp2.txt");
             } else {
-                object_var(24+i, 14, 1, "assets/battle/hp1_1lijn.txt");
+                object_var(24+i, 14, 1, "assets/battle/hp1.txt");
             }
         } else {
-            object_var(24+i, 14, 1, "assets/battle/hp0_1lijn.txt");
+            object_var(24+i, 14, 1, "assets/battle/hp0.txt");
         }
     }
 
@@ -160,12 +160,12 @@ void battle_healthbars(int originele_health, int tegenstander_health) {
      for (int i = 0; i < 36; i++) {
         if (i < ((player_health * 36) / originele_player_health)) {
             if (10 > ((player_health * 36) / originele_player_health)) {
-                object_var(83+i, 56, 1, "assets/battle/hp2_1lijn.txt");
+                object_var(83+i, 56, 1, "assets/battle/hp2.txt");
             } else {
-                object_var(83+i, 56, 1, "assets/battle/hp1_1lijn.txt");
+                object_var(83+i, 56, 1, "assets/battle/hp1.txt");
             }
         } else {
-            object_var(83+i, 56, 1, "assets/battle/hp0_1lijn.txt");
+            object_var(83+i, 56, 1, "assets/battle/hp0.txt");
         }
     }
 }
@@ -176,13 +176,13 @@ void beurt_tegen(int tegenstander_health,
 int tegenstander_attack,int originele_health) {
     // Bepaal 'random' wat de volgende zet van de tegenstander is.
     if (rand() % 2 == 1) {
-        object_var(1, 74, 126, "assets/battle/tackle_enemy_1lijn.txt");
+        object_var(1, 74, 126, "assets/battle/tackle_enemy.txt");
         player_health -= tegenstander_attack;
         if (player_health < 0) {
             player_health = 0;
         }
     } else {
-        object_var(1, 74, 126, "assets/battle/leer_enemy_1lijn.txt");
+        object_var(1, 74, 126, "assets/battle/leer_enemy.txt");
     }
 
     // Render de health bar van de speler en tegenstander.
@@ -197,11 +197,11 @@ int tegenstander_attack,int originele_health) {
 void battle_end(void) {
     // Check wie er defeated is.
     if (player_health < 1) {
-        object_var(1, 74, 126, "assets/main/player_defeated_1lijn.txt");
-        object_var(12, 38, 38, "assets/pokemons/wit_1lijn.txt");
+        object_var(1, 74, 126, "assets/main/player_defeated.txt");
+        object_var(12, 38, 38, "assets/pokemons/remove_pokemon.txt");
     } else {
-        object_var(1, 74, 126, "assets/main/enemy_defeated_1lijn.txt");
-        object_var(85, 10, 38, "assets/pokemons/wit_1lijn.txt");
+        object_var(1, 74, 126, "assets/main/enemy_defeated.txt");
+        object_var(85, 10, 38, "assets/pokemons/remove_pokemon.txt");
     }
 
     // Refresh en sluit de battle met een gradient animatie.
@@ -239,7 +239,7 @@ void battle(void) {
     // Main battle loopt zolang speler en tegenstander > 0 health hebben.
     while (player_health > 0 && pokemon_array[c].health > 0) {
         // Render het main battle scherm met alle standaard objecten erop.
-        render128("assets/main/battle_1lijn.txt");
+        render128("assets/main/battle.txt");
         // Render de spelers pokemon
         object_var(12, 50, 28, pokemon_array[starter_pokemon+2].filename);
         // Render de enemy pokemon
@@ -396,9 +396,9 @@ void speel(rooster *rp) {
 
         // Wissel elke movement van water texture, wat op een animatie lijkt.
         if ((pos_x+pos_y) % 2 == 1) {
-            sprites['W'] = "assets/sprites/water/water_1lijn.txt";
+            sprites['W'] = "assets/sprites/water/water.txt";
         } else {
-            sprites['W'] = "assets/sprites/water/water2_1lijn.txt";
+            sprites['W'] = "assets/sprites/water/water2.txt";
         }
 
         // Render het huidige frame.
@@ -449,7 +449,7 @@ void einde(void) {
     // Clear het huidige scherm en render de endscreen met score.
     clear();
     sleep(1);
-    render128("assets/main/endscreen_1lijn.txt");
+    render128("assets/main/endscreen.txt");
     object_var(5, 5, 28, "assets/main/score.txt");
 
     // Render de juiste score van de speler.
