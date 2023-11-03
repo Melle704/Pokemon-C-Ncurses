@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # execute the make command
+make clean
+
 make
 
 # open new terminal with profile.
-gnome-terminal --window-with-profile=square --maximize --title="Pokemon UvA" -e "./game"
+gnome-terminal --maximize --title="Pokemon UvA" -e "./game"
 
 

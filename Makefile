@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -std=c11 -Wextra -Wpedantic -g3 -fsanitize=address
 LDFLAGS = -lncurses -fsanitize=address
-SRC = $(filter-out voorbeeld.c,$(wildcard *.c))
-HEADERS = $(wildcard *.h)
+SRC = $(filter-out src/voorbeeld.c,$(wildcard src/*.c))
+HEADERS = $(wildcard src/*.h)
 
 .PHONY: tarball1 tarball2 clean
 
@@ -12,7 +12,8 @@ game: $(SRC)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 voorbeeld:
-	$(CC) -o voorbeeld voorbeeld.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -o voorbeeld src/voorbeeld.c $(CFLAGS) $(LDFLAGS)
 
 clean:
 	rm -f *~ *.o voorbeeld game deel?.tar.gz
+
