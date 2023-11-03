@@ -1,8 +1,0 @@
-[/]
-default='b1dcc9dd-5262-4d8d-a863-c897e6d979b9'
-list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9', 'cbaa9b7a-e180-4851-811d-e7e2804a9297', 'd99fb6d5-140b-48e3-ab5f-a102c46dff39']
-
-[:cbaa9b7a-e180-4851-811d-e7e2804a9297]
-font='Square 3.3994140625'
-use-system-font=false
-visible-name='square'
