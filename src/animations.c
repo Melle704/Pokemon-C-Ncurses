@@ -113,10 +113,6 @@ void animatie_gradient() {
     refresh();
     nanosleep(&time3, NULL);
 
-    init_color(COLOR_WHITE, 0, 0, 0);
-    refresh();
-    nanosleep(&time3, NULL);
-
     // Clear het scherm voor de laatste frame.
     clear();
     refresh();

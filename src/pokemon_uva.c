@@ -323,10 +323,10 @@ void interactie(rooster *rp, int richting) {
             case 'c':
                 starter_pokemon = 3; rooster_plaats(rp, 52, 26, '>'); break;
             case '+':
-                object_var(25, 72, 126,"assets/main/choose_starter_1lijn.txt");
+                render_tekst("go ahead! choose your      starter pokemon.");
                 refresh(); getch(); break;
             case ':':
-                object_var(25, 72, 126, "assets/main/goto_professor_oak.txt");
+                render_tekst("hey, you should go to      professor oak!");
                 refresh(); getch(); break;
         }
         // Als je een starter hebt gekozen, dan kan je verder naar de route.

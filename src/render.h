@@ -9,6 +9,8 @@ void object_var(int render_x, int render_y, int breedte, char *filename);
 
 void render128(char *filename);
 
+void render_tekst(char *str);
+
 void render_kleur(int c);
 
 #endif

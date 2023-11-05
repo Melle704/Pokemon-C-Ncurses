@@ -1,6 +1,17 @@
+#define _POSIX_C_SOURCE 199309L
 #include <ncurses.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include <time.h>
 
 #include "render.h"
+
+// Sleep struct voor tijd tussen letters printen.
+struct timespec tekst = {
+    .tv_sec = 0,
+    .tv_nsec = 30000000,
+};
 
 // Render de speler op de huidige positie.
 void speler(char *richting) {
@@ -121,6 +132,49 @@ void render128(char *filename) {
    }
    fclose(re);
    return;
+}
+
+
+// Render een tekstbox met de gegeven string in ascii.
+void render_tekst(char *str) {
+   object_var(0, 75, 176, "assets/tekst/tekstbox.txt");
+
+   char *letters = "assets/tekst/letters.txt";
+   FILE *rt = fopen(letters, "r");
+
+   int render_x = 9;
+   int render_y = 84;
+
+   for (size_t i = 0; i < strlen(str); i++) {
+      // Handel speciale characters af.
+      char file[20];
+      switch (str[i]) {
+         case '.': strcpy(file, "dot");         break;
+         case ',': strcpy(file, "comma");       break;
+         case ' ': strcpy(file, "space");       break;
+         case '?': strcpy(file, "question");    break;
+         case '!': strcpy(file, "exclemation"); break;
+         default:
+            snprintf(file, sizeof(file), "%c", str[i]);
+            break;
+      }
+
+      // Print het character in de string uit.
+      char filename[50];
+      snprintf(filename, sizeof(filename), "assets/tekst/%s%s", file, ".txt");
+      object_var(render_x, render_y, 5, filename);
+
+      // Verander de render postitie.
+      render_x += 6;
+      if (i == 26) {
+         render_x = 9;
+         render_y = 95;
+      }
+
+      nanosleep(&tekst, NULL);
+      refresh();
+   }
+   fclose(rt);
 }
 
 
