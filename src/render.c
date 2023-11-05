@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <ctype.h>
 #include <time.h>
 
 #include "render.h"
@@ -137,44 +137,47 @@ void render128(char *filename) {
 
 // Render een tekstbox met de gegeven string in ascii.
 void render_tekst(char *str) {
-   object_var(0, 75, 176, "assets/tekst/tekstbox.txt");
+   // Correctie is nodig zodat het meerdere keren door de for loop kan gaan.
+   int correctie = 0;
+   for (size_t i = 0; i < strlen(str)+correctie;) {
+      // Render de tekst box zonder letters.
+      object_var(0, 75, 176, "assets/tekst/tekstbox.txt");
 
-   char *letters = "assets/tekst/letters.txt";
-   FILE *rt = fopen(letters, "r");
+      int render_x = 9;
+      int render_y = 84;
+      // Elke tekstbox is maximaal 52 characters.
+      for (;(i == 0 || i % 52 != 0) && i < strlen(str)+correctie; i++, render_x += 6) {
+         // Verander de render postitie, bij de tweede regel.
+         if (i > 0 && i % 26 == 0) {
+            render_x = 9;
+            render_y = 95;
+         }
 
-   int render_x = 9;
-   int render_y = 84;
+         // Handel speciale characters af.
+         char file[20];
+         switch (str[i-correctie]) {
+            case '.': strcpy(file, "dot");         break;
+            case ',': strcpy(file, "comma");       break;
+            case ' ': strcpy(file, "space");       break;
+            case '?': strcpy(file, "question");    break;
+            case '!': strcpy(file, "exclemation"); break;
+            default:
+               snprintf(file, sizeof(file), "%c", tolower(str[i-correctie]));
+               break;
+         }
 
-   for (size_t i = 0; i < strlen(str); i++) {
-      // Handel speciale characters af.
-      char file[20];
-      switch (str[i]) {
-         case '.': strcpy(file, "dot");         break;
-         case ',': strcpy(file, "comma");       break;
-         case ' ': strcpy(file, "space");       break;
-         case '?': strcpy(file, "question");    break;
-         case '!': strcpy(file, "exclemation"); break;
-         default:
-            snprintf(file, sizeof(file), "%c", str[i]);
-            break;
+         // Print de character in de string uit.
+         char filename[50];
+         snprintf(filename, sizeof(filename), "assets/tekst/%s%s", file, ".txt");
+         object_var(render_x, render_y, 5, filename);
+
+         nanosleep(&tekst, NULL);
+         refresh();
       }
-
-      // Print het character in de string uit.
-      char filename[50];
-      snprintf(filename, sizeof(filename), "assets/tekst/%s%s", file, ".txt");
-      object_var(render_x, render_y, 5, filename);
-
-      // Verander de render postitie.
-      render_x += 6;
-      if (i == 26) {
-         render_x = 9;
-         render_y = 95;
-      }
-
-      nanosleep(&tekst, NULL);
-      refresh();
+      correctie++;
+      i++;
+      getch();
    }
-   fclose(rt);
 }
 
 

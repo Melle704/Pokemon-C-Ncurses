@@ -324,10 +324,10 @@ void interactie(rooster *rp, int richting) {
                 starter_pokemon = 3; rooster_plaats(rp, 52, 26, '>'); break;
             case '+':
                 render_tekst("go ahead! choose your      starter pokemon.");
-                refresh(); getch(); break;
+                break;
             case ':':
                 render_tekst("hey, you should go to      professor oak!");
-                refresh(); getch(); break;
+                break;
         }
         // Als je een starter hebt gekozen, dan kan je verder naar de route.
         if (starter_pokemon != 0) {
