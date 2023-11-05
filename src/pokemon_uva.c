@@ -101,7 +101,7 @@ void toon_rooster(rooster *rp, int richting) {
             move(render_y, render_x);
 
             // Render de 16x16 sprite behorend bij dit object in de grid.
-            object16(render_x, render_y, sprites[rooster_kijk(rp, x, y)]);
+            object16(render_x, render_y, sprites[(int)rooster_kijk(rp, x, y)]);
 
             if (render_x == 80 && render_y == 48) {
                 // Render speler in de juiste richting, op de vaste locatie.
@@ -303,7 +303,7 @@ void battle(void) {
 // Functie om een interactie tussen de speler en het object voor zich
 // uit te voeren.
 void interactie(rooster *rp, int richting) {
-    char c;
+    char c = 1;
     // Bepaal het object waarmee word geinteracteerd gebasseerd op de richting
     switch (richting) {
         case 1:   c = rooster_kijk(rp, pos_x, pos_y-1); break;

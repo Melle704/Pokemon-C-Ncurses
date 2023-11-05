@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c11 -Wextra -Wpedantic -g3 -fsanitize=address
+CFLAGS = -std=c11 -O3 -march=native -Wall -Wextra -Wpedantic -g3 -fsanitize=address
 LDFLAGS = -lncurses -fsanitize=address
 SRC = $(filter-out src/voorbeeld.c,$(wildcard src/*.c))
 HEADERS = $(wildcard src/*.h)
