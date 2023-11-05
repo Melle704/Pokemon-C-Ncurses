@@ -137,7 +137,7 @@ void render128(char *filename) {
 
 // Render een tekstbox met de gegeven string in ascii.
 void render_tekst(char *str) {
-   // Correctie is nodig zodat het meerdere keren door de for loop kan gaan.
+   // Correctie is nodig zodat het de correcte render positie kan bijhouden.
    int correctie = 0;
    for (size_t i = 0; i < strlen(str)+correctie;) {
       // Render de tekst box zonder letters.
@@ -145,12 +145,27 @@ void render_tekst(char *str) {
 
       int render_x = 9;
       int render_y = 84;
+
       // Elke tekstbox is maximaal 52 characters.
-      for (;(i == 0 || i % 52 != 0) && i < strlen(str)+correctie; i++, render_x += 6) {
-         // Verander de render postitie, bij de tweede regel.
-         if (i > 0 && i % 26 == 0) {
-            render_x = 9;
-            render_y = 95;
+      for (;i < strlen(str)+correctie; i++, render_x += 6) {
+
+         // Automatic wrapping voor woorden in de tekstbox.
+         if (str[i-correctie] >= 'a' && i > 0) {
+            // Bereken de laatste character van een woord.
+            int i2;
+            for (i2 = i; str[i2] != ' ' && str[i2] != '\0'; i2++);
+
+            int laatste;
+            // Check of het laatste character niet buiten de tekst zit.
+            if (render_x + ((i2 - i - correctie) * 6) > 162) {
+               if (render_y == 84) {
+                  render_x = 9;
+                  render_y = 95;
+                  laatste = i2;
+               } else if (laatste != i2) {
+                  break;
+               }
+            }
          }
 
          // Handel speciale characters af.

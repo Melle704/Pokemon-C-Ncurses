@@ -323,10 +323,12 @@ void interactie(rooster *rp, int richting) {
             case 'c':
                 starter_pokemon = 3; rooster_plaats(rp, 52, 26, '>'); break;
             case '+':
-                render_tekst("go ahead! choose your      starter pokemon.");
+                render_tekst("hey boy, go ahead and choose your very own "
+                             "starter pokemon! good luck with your journey!");
                 break;
             case ':':
-                render_tekst("hey, you should go to      professor oak!");
+                render_tekst("good morning! you should go to professor oak, "
+                             "to get your starter pokemon!");
                 break;
         }
         // Als je een starter hebt gekozen, dan kan je verder naar de route.
@@ -370,10 +372,10 @@ int beweeg(rooster *rp, int dx, int dy, int richting) {
         case 'K':   animatie_gradient(); pos_x = 41; pos_y = 36; return 2;
         case 'j':   animatie_gradient(); pos_x = 50; pos_y = 40; return 1;
         case 'q':   animatie_gradient(); pos_x = 47; pos_y = 30; return 1;
-        case 'w':   object_var(25, 72, 126, "assets/main/door_locked.txt");
-                    refresh(); getch(); return richting;
-        case ';':   object_var(25, 72, 126, "assets/main/starter_first.txt");
-                    refresh(); getch(); return richting;
+        case 'w':   render_tekst("the door appears to be locked!");
+                    return richting;
+        case ';':   render_tekst("it is a good idea to get your starter first!");
+                    return richting;
         default:    return richting;
     }
 
