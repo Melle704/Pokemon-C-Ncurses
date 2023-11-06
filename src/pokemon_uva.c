@@ -317,11 +317,17 @@ void interactie(rooster *rp, int richting) {
     if (starter_pokemon == 0) {
         switch (c) {
             case 'a':
-                starter_pokemon = 1; rooster_plaats(rp, 50, 26, '>'); break;
+                starter_pokemon = 1; rooster_plaats(rp, 50, 26, '>');
+                render_tekst("You choose charmander as your starter pokemon!");
+                break;
             case 'b':
-                starter_pokemon = 2; rooster_plaats(rp, 51, 26, '>'); break;
+                starter_pokemon = 2; rooster_plaats(rp, 51, 26, '>');
+                render_tekst("You choose bulbasaur as your starter pokemon!");
+                break;
             case 'c':
-                starter_pokemon = 3; rooster_plaats(rp, 52, 26, '>'); break;
+                starter_pokemon = 3; rooster_plaats(rp, 52, 26, '>');
+                render_tekst("You choose squirtle as your starter pokemon!");
+                break;
             case '+':
                 render_tekst("hey boy, go ahead and choose your very own "
                              "starter pokemon! good luck with your journey!");
@@ -336,6 +342,39 @@ void interactie(rooster *rp, int richting) {
             rooster_plaats(rp, 14, 25, ' ');
             rooster_plaats(rp, 15, 25, ' ');
         }
+    } else if (starter_pokemon != 0){
+        // Nadat je een starter hebt gekozen.
+        switch(c) {
+            case '+':
+                render_tekst("great choice, great choice...");
+                break;
+            case ':':
+                render_tekst("hey, that starter is looking great!");
+                break;
+            case 'a':
+                render_tekst("no, no, you made your choice.");
+                break;
+            case 'b':
+                render_tekst("no, no, you made your choice.");
+                break;
+            case 'c':
+                render_tekst("no, no, you made your choice.");
+                break;
+        }
+    }
+    switch (c) {
+        // altijd.
+        case 'E':
+            render_tekst("you tune in to the weather channel. "
+                            "the weather looks great today!");
+            break;
+        case 'N':
+            render_tekst("it appears to be a console, "
+                         "but you have no clue how it works.");
+            break;
+        case 'O':
+            render_tekst("beep boop... authentication failed.");
+            break;
     }
 }
 
@@ -366,6 +405,9 @@ int beweeg(rooster *rp, int dx, int dy, int richting) {
         case '>':   break;
         case 'J':   break;
         case '=':   break;
+        case 'P':   break;
+        case '{':   break;
+        case '}':   break;
         case 'T':   animatie_gradient(); pos_x = 53; pos_y = 35; return 3;
         case '-':   animatie_gradient(); pos_x = 10; pos_y = 32; return 2;
         case '<':   animatie_gradient(); pos_x = 18; pos_y = 37; return 2;

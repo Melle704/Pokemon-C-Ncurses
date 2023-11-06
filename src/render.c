@@ -137,14 +137,20 @@ void render128(char *filename) {
 
 // Render een tekstbox met de gegeven string in ascii.
 void render_tekst(char *str) {
+   // Start render positie van elke lijn.
+   int regel1[2] = {9, 84};
+   int regel2[2] = {9, 95};
+
    // Correctie is nodig zodat het de correcte render positie kan bijhouden.
    int correctie = 0;
+
    for (size_t i = 0; i < strlen(str)+correctie;) {
       // Render de tekst box zonder letters.
       object_var(0, 75, 176, "assets/tekst/tekstbox.txt");
 
-      int render_x = 9;
-      int render_y = 84;
+      // Zet de render positie op regel 1.
+      int render_x = regel1[0];
+      int render_y = regel1[1];
 
       // Elke tekstbox is maximaal 52 characters.
       for (;i < strlen(str)+correctie; i++, render_x += 6) {
@@ -153,15 +159,16 @@ void render_tekst(char *str) {
          if (str[i-correctie] >= 'a' && i > 0) {
             // Bereken de laatste character van een woord.
             int i2;
-            for (i2 = i; str[i2] != ' ' && str[i2] != '\0'; i2++);
+            for (i2 = i - correctie; str[i2] != ' ' && str[i2] != '\0'; i2++);
 
             int laatste;
-            // Check of het laatste character niet buiten de tekst zit.
-            if (render_x + ((i2 - i - correctie) * 6) > 162) {
-               if (render_y == 84) {
-                  render_x = 9;
-                  render_y = 95;
+            // Check of de laatste character niet buiten de tekstbox zit.
+            if (render_x + ((i2 - i) * 6) > 168) {
+               if (render_y == regel1[1]) {
+                  render_x = regel2[0];
+                  render_y = regel2[1];
                   laatste = i2;
+               // Als de tekst al op de laatste regel van de box zit.
                } else if (laatste != i2) {
                   break;
                }
