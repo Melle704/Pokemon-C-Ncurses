@@ -16,17 +16,17 @@ It is recommended to use the 'square.ttf' font included in the repo for better g
 ### Linux
 1. Clone / download the repository
 2. Open a terminal
-3. Resize terminal to at least 176x112
-4. run `./pokemon_ncurses`
+3. Resize terminal to be at least 176x112
+4. Run `./pokemon_ncurses.sh`
 
 ## How to Play
 You can move around using the WASD and arrow keys and interact with objects and people using the enter key.
 
 ## Preview
-![Bedroom](assets/readme/bedroom.png)
-![Bedroom](assets/readme/oak.png)
-![Bedroom](assets/readme/route2.png)
-![Bedroom](assets/readme/village.png)
+<img src="assets/readme/bedroom.png" alt="Bedroom" width="700"/>
+<img src="assets/readme/oak.png" alt="Oak's lab" width="700"/>
+<img src="assets/readme/route2.png" alt="Route 2" width="700"/>
+<img src="assets/readme/village.png" alt="Village" width="700"/>
 
 ## Dependencies
 This project relies on the standard C libraries along with the `Ncurses` library.
