@@ -14,7 +14,9 @@
 int menu_toets(int toets, int positie) {
     // Bij pijltje naar benden tel je 1 bij positie op en vice versa.
     switch (toets) {
+        case 's':
         case KEY_DOWN:  positie++; break;
+        case 'w':
         case KEY_UP:    positie--; break;
     }
 
@@ -61,7 +63,7 @@ void menu(void) {
             switch (positie) {
                 case 1:     return;                           // Start het spel
                 case 2:     game_color(1); kleuren(); break;    // kleuren
-                case 3:     render128("assets/main/controls_1lijn.txt");
+                case 3:     render128("assets/main/controls.txt");
                             getch();
                             break;                            // Controls.
                 case 4:     endwin(); delwin(stdscr); exit(0);// Exit het spel
@@ -69,7 +71,8 @@ void menu(void) {
         }
 
         // Bepaal de nieuwe cursor posite aan de hand van de spelers input.
-        if (toets == KEY_UP || toets == KEY_DOWN) {
+        if (toets == KEY_UP || toets == KEY_DOWN ||
+            toets == 'w' || toets == 's') {
             positie = menu_toets(toets, positie);
         }
 

@@ -279,7 +279,8 @@ void battle(void) {
                 break;
 
             // Bij de key up of down inverseer cursor pos.
-            } else if (input == KEY_UP || input == KEY_DOWN) {
+            } else if (input == KEY_UP || input == KEY_DOWN ||
+                       input == 'w' || input == 's') {
                 cursor_pos = 1 - cursor_pos;
             }
 
@@ -474,9 +475,13 @@ void speel(rooster *rp) {
         // Vraag een karakter, om daarna de relatieve positie te bepalen.
         int toets = getch();
         switch (toets) {
+            case 'w':
             case KEY_UP:    rel_y--; richting = 1; break;
+            case 's':
             case KEY_DOWN:  rel_y++; richting = 2; break;
+            case 'a':
             case KEY_LEFT:  rel_x--; richting = 3; break;
+            case 'd':
             case KEY_RIGHT: rel_x++; richting = 4; break;
             case '\n':      interactie(rp, richting); continue;
             default:        continue;
