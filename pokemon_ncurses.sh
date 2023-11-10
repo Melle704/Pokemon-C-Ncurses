@@ -19,6 +19,5 @@ make clean
 make
 
 # Open a new maximized terminal and run the game.
-# gnome-terminal --maximize --title="Pokemon UvA" -e "./game"
 ./game
 
